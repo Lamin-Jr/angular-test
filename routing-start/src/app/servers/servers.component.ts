@@ -15,4 +15,8 @@ export class ServersComponent implements OnInit {
     this.servers = this.serversService.getServers();
   }
 
+  onClickServer (id: number){
+    this.serversService.onServerClick.emit(id)
+  }
+
 }

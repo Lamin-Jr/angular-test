@@ -17,7 +17,7 @@ const route: Routes = [
   { path: "users", component: UsersComponent },
   { path: "users/:id/:name", component: UserComponent },
   { path: "servers", component: ServersComponent },
-  { path: "servers/edit-server", component: EditServerComponent },
+  { path: "servers/edit/:id/:name/:status", component: EditServerComponent },
 ];
 @NgModule({
   declarations: [
