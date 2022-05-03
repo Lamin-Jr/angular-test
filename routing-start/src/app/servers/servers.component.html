@@ -4,14 +4,15 @@
       <a
         class="list-group-item"
         *ngFor="let server of servers"
-        (click)="onClickServer(server.id)"
+        (click)="onShowUser(server.id, servers?.status)"
         >
         {{ server.name }}
       </a>
     </div>
   </div>
   <div class="col-xs-12 col-sm-4">
-    <app-server></app-server>
+    <router-outlet></router-outlet>
+    <!-- <app-server></app-server> -->
   </div>
 </div>
 

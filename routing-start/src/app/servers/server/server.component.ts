@@ -1,27 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { IServersModel } from "../servers.interface";
 
-import { ServersService } from '../servers.service';
+import { ServersService } from "../servers.service";
 
 @Component({
-  selector: 'app-server',
-  templateUrl: './server.component.html',
-  styleUrls: ['./server.component.css']
+  selector: "app-server",
+  templateUrl: "./server.component.html",
+  styleUrls: ["./server.component.css"],
 })
 export class ServerComponent implements OnInit {
-  server: {id: number, name: string, status: string};
+  server: { id: number; name: string; status: string };
+  entityId: number;
 
-  constructor(private serversService: ServersService, protected router: Router) { }
+  constructor(
+    private serversService: ServersService,
+    protected router: Router,
+    protected activeRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    const server = this.serversService.getServers()[0];
-    this.server = this.serversService.getServer(server.id);
-    this.serversService.onServerClick.subscribe(id => this.server = this.serversService.getServer(id) )
+    this.entityId = +this.activeRoute.snapshot.params["id"];
+
+    this.server = this.serversService.getServer(this.entityId);
+
+    this.activeRoute.params.subscribe((params: Params) => {
+      this.entityId = +params.id;
+      this.server = this.serversService.getServer(this.entityId);
+    });
   }
 
-  editServer(server){
-    this.serversService.onEditServer.emit(server)
-    const {id, name, status}: {id: number, name: string, status: string} = server
-    this.router.navigate([`/servers/edit/${id}/${name}/${status}`], {queryParams: {parentRoute: "/servers"}})
+  editServer(server: IServersModel) {
+    this.serversService.onEditServer.emit(server);
+    const { id, name, status } = server;
+    this.router.navigate([`edit`,id,name,status], {
+      queryParams: { parentRoute: "/servers" },
+      relativeTo: this.activeRoute
+    });
   }
+
+  getServerApi;
 }

@@ -20,7 +20,6 @@ export class UsersComponent implements OnInit {
 
   onNavigateToUser(nav:IUsersModel) {
     this.router.navigate([`/users/${nav.id}/${nav.name}`]);
-    console.log("the user list", nav);
   }
   onNavigate() {
     this.router.navigate(["servers"]);

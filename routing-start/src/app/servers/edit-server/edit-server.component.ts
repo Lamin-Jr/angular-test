@@ -39,6 +39,7 @@ export class EditServerComponent implements OnInit {
   ngOnInit() {
 
     const params = this.activeRoute.snapshot.params;
+    console.log("My Params Snap",this.activeRoute.snapshot)
     this.parentRoute = this.activeRoute.snapshot.queryParams.parentRoute
 
     this.server = {
