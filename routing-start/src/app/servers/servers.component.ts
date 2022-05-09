@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Route, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ServersService } from "./servers.service";
 
 @Component({
@@ -10,7 +10,11 @@ import { ServersService } from "./servers.service";
 export class ServersComponent implements OnInit {
   public servers: { id: number; name: string; status: string }[] = [];
 
-  constructor(private serversService: ServersService, private router: Router, private activateRoute: ActivatedRoute) {}
+  constructor(
+    private serversService: ServersService,
+    private router: Router,
+    private activateRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.servers = this.serversService.getServers();
@@ -19,10 +23,13 @@ export class ServersComponent implements OnInit {
   onClickServer(id: number) {
     this.serversService.onServerClick.emit(id);
   }
-  onShowUser(id: number, status: string) {
+  
+  onShowUser(id: number) {
+    const { status } = this.serversService.getServer(id);
     this.router.navigate([id], {
       relativeTo: this.activateRoute,
-      queryParams: { status: status },
+      queryParams: { status: status, parentRoute: this.router.url },
+      queryParamsHandling: "merge",
     });
   }
 }

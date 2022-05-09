@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  ViewChildren,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Route, Router } from "@angular/router";
 import { IServersModel } from "../servers.interface";
 
@@ -29,6 +22,7 @@ export class EditServerComponent implements OnInit {
   serverName = "";
   serverStatus = "";
   protected serverId: number;
+  isLoading: boolean = false;
 
   constructor(
     private serversService: ServersService,
@@ -37,21 +31,25 @@ export class EditServerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const queryParams = this.activeRoute.snapshot.queryParams;
+    const snapshot = this.activeRoute.snapshot;
+    const { loading } = this.activeRoute.snapshot.params;
 
-    const params = this.activeRoute.snapshot.params;
-    console.log("My Params Snap",this.activeRoute.snapshot)
-    this.parentRoute = this.activeRoute.snapshot.queryParams.parentRoute
+    this.isLoading = loading;
+
+    console.log("is Loading?", this.isLoading);
+
+    this.parentRoute = queryParams?.parentRoute;
+    console.log(this.parentRoute);
 
     this.server = {
-      name: params?.name,
-      id: params.id,
-      status: params.status
+      name: queryParams?.name,
+      id: queryParams.id,
+      status: queryParams.status,
     };
 
     this.serverName = this.server.name;
     this.serverStatus = this.server.status;
-
-    console.log(this.serverName);
 
     this.serversService.onEditServer.subscribe(
       (server: IServersModel) => (this.server = server)
@@ -63,6 +61,6 @@ export class EditServerComponent implements OnInit {
       name: this.serverName,
       status: this.serverStatus,
     });
-    this.router.navigate([this.parentRoute])
+    this.router.navigate([this.parentRoute, this.server.id]);
   }
 }

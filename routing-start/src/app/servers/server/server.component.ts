@@ -12,6 +12,7 @@ import { ServersService } from "../servers.service";
 export class ServerComponent implements OnInit {
   server: { id: number; name: string; status: string };
   entityId: number;
+  private parenRoute: string;
 
   constructor(
     private serversService: ServersService,
@@ -24,6 +25,8 @@ export class ServerComponent implements OnInit {
 
     this.server = this.serversService.getServer(this.entityId);
 
+    console.log(this.activeRoute);
+
     this.activeRoute.params.subscribe((params: Params) => {
       this.entityId = +params.id;
       this.server = this.serversService.getServer(this.entityId);
@@ -33,9 +36,10 @@ export class ServerComponent implements OnInit {
   editServer(server: IServersModel) {
     this.serversService.onEditServer.emit(server);
     const { id, name, status } = server;
-    this.router.navigate([`edit`,id,name,status], {
-      queryParams: { parentRoute: "/servers" },
-      relativeTo: this.activeRoute
+    this.router.navigate(["edit"], {
+      relativeTo: this.activeRoute,
+      queryParams: { id, name, status, loading: false },
+      queryParamsHandling: "preserve",
     });
   }
 
