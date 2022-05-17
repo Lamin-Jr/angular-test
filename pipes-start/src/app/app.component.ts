@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { IServers } from "./servers/server.interface";
 import { ServersService } from "./servers/servers.service";
 
@@ -8,13 +9,16 @@ import { ServersService } from "./servers/servers.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  constructor(protected serverService: ServersService) {}
+  constructor(protected serverService: ServersService, protected route: Router) {}
   servers: IServers[] = [];
   ngOnInit(){
     this.servers = this.serverService.getServers()
   }
 
   newItem = "";
+  viewServer(){
+    this.route.navigate(["servers"])
+  }
 
   addNewItem() {
     this.servers.push({
