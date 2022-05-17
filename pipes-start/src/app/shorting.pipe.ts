@@ -1,8 +1,9 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Injectable, Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
   name: "shortingText",
 })
+@Injectable()
 export class ShortingPipe implements PipeTransform {
   transform(value: string): any {
     if(value.length > 8) {
