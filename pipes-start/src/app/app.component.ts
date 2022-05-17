@@ -1,54 +1,28 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { IServers } from "./servers/server.interface";
+import { ServersService } from "./servers/servers.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  servers = [
-    {
-      instanceType: 'medium',
-      name: 'Production Server',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'large',
-      name: 'User Database',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'small',
-      name: 'Development Server',
-      status: 'offline',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'small',
-      name: 'Testing Environment Server',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    }
-  ];
+  constructor(protected serverService: ServersService) {}
+  servers: IServers[] = [];
+  ngOnInit(){
+    this.servers = this.serverService.getServers()
+  }
 
   newItem = "";
 
-  addNewItem(){
+  addNewItem() {
     this.servers.push({
-      instanceType: 'small',
-      name: this.newItem ?? "was Empty",
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    })
+      instanceType: "small",
+      name: this.newItem,
+      status: "stable",
+      started: new Date(15, 1, 2017),
+    });
   }
-
-  getStatusClasses(server: {instanceType: string, name: string, status: string, started: Date}) {
-    return {
-      'list-group-item-success': server.status === 'stable',
-      'list-group-item-warning': server.status === 'offline',
-      'list-group-item-danger': server.status === 'critical'
-    };
-  }
+  
 }

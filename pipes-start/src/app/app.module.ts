@@ -5,18 +5,19 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ShortingPipe } from './shorting.pipe';
+import { ServersService } from './servers/servers.service';
+import { AppRoute } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ShortingPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    // ShortingPipe
+    AppRoute,
   ],
-  providers: [],
+  providers: [ServersService, ShortingPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

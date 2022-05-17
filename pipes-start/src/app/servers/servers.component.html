@@ -1,0 +1,15 @@
+<h1>Servers</h1>
+<ul class="list-group">
+    <li
+      class="list-group-item"
+      *ngFor="let server of servers, index as i"
+      [ngClass]="getStatusClasses(server)"
+      (click)="onSingleItemClick(i)"
+    >
+      <span class="badge">
+        {{ server.status }}
+      </span>
+      <strong>{{ server.name | shortingText  }}</strong> |
+      {{ server.instanceType }} | {{ server.started }}
+    </li>
+  </ul>
