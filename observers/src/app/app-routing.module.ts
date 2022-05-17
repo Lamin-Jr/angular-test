@@ -8,7 +8,7 @@ import { UserComponent } from './user/user.component';
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'user/:id', component: UserComponent},
-  {path: 'driver', component: DriverComponent}
+  {path: 'driver', loadChildren: ()=> import("./driver/driver.module").then(module => module.DriverModule)}
 ];
 
 @NgModule({
