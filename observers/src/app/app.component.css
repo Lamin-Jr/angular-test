@@ -1,0 +1,11 @@
+.container {
+  margin-top: 30px;
+}
+
+.menu-div {
+  display: flex;
+}
+
+.menu-item {
+  margin: 0 5px;
+}
