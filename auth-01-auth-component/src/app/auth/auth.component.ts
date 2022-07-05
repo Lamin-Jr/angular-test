@@ -1,9 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { LogInService } from "../shared/login.service";
-import { IUserLogInResponse, IUserSignUpResponse } from "../shared/user.interface";
+import { IUser } from "../shared/user.interface";
 import { AuthService } from "./auth.service";
 
 @Component({
@@ -11,59 +8,60 @@ import { AuthService } from "./auth.service";
   templateUrl: "./auth.component.html",
 })
 export class AuthComponent {
-  constructor(
-    protected logInService: LogInService,
-    private authService: AuthService,
-    protected route: Router
-  ) {}
-
-  switchLogInButton: boolean = false;
-  isLoading: boolean = false;
-  protected isAuthenticated: boolean = false;
-
+  swithLogIn: boolean = false;
+  isRegistered: boolean = false;
   errorMessage: string = null;
+  isLoading: boolean = false;
 
-  onLogIng(user: NgForm) {
+  constructor(protected authService: AuthService, protected route: Router) {}
+
+  onSignUp(user: IUser) {
+    console.log("Is SignUp Baby authData", this.authService.user);
+
     this.isLoading = true;
-    this.authService
-      .onLogIn({ ...user.value, returnSecureToken: true })
-      .subscribe(
-        (logUser: IUserLogInResponse) => {
+
+    this.authService.onSignUp(user).subscribe(
+      (signUpRes) => {
+        setTimeout(() => {
+          this.route.navigate(["/recipes"]);
           this.isLoading = false;
-          if(logUser.registered){
-            console.log("The Logged User:: ",logUser)
-            this.isAuthenticated = logUser.registered;
-            this.route.navigate(["recipes"])
-          }
-        },
-        (error) => {
+        }, 2000);
+      },
+      (error) => {
+        setTimeout(() => {
           this.isLoading = false;
-          this.errorMessage = error
-        }
-      );
+          this.errorMessage = error;
+        }, 2000);
+      }
+    );
   }
 
-  onSignUp(user: NgForm) {
+  onLogIn(user: IUser) {
     this.isLoading = true;
-    this.authService
-      .onSignUp({ ...user.value, returnSecureToken: true })
-      .subscribe(
-        (userRes) => {
+    this.authService.onLogIn(user).subscribe(
+      (logInRes) => {
+        setTimeout(() => {
           this.isLoading = false;
-          console.log(userRes);
-        },
-        (error) => {
+          this.route.navigate(["/recipes"]);
+        });
+      },
+      (error) => {
+        setTimeout(() => {
           this.isLoading = false;
-          this.errorMessage = error
-        }
-      );
+          this.errorMessage = error;
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 1500);
+        }, 2000);
+      }
+    );
   }
 
-  onSwitchLoginButton() {
-    this.switchLogInButton = !this.switchLogInButton;
+  switchLogInButton() {
+    this.swithLogIn = !this.swithLogIn;
   }
 
-  onSummit(form: NgForm) {
-    console.log(form.value);
-  }
+  // handleAuthentication(){
+    
+  // } 
 }
